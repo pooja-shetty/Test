@@ -1,27 +1,37 @@
-<project name="SimpleProject" default="run" basedir=".">
+pipeline {
+    agent any
 
-    <!-- Property definitions -->
-    <property name="src.dir" value="src"/>        <!-- Directory for source files -->
-    <property name="build.dir" value="build"/>    <!-- Directory for compiled classes -->
+    tools {
+        ant 'Ant 1.10.15'   // Use the name of the Ant installation configured in Jenkins
+    }
 
-    <!-- Task to clean the build directory -->
-    <target name="clean" description="Clean the build directory">
-        <delete dir="${build.dir}"/>
-    </target>
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Cloning the GitHub repository...'
+                git url: 'https://github.com/pooja-shetty/Test.git', branch: 'main'
+            }
+        }
 
-    <!-- Task to compile Java source files -->
-    <target name="compile" description="Compile the Java source files" depends="clean">
-        <mkdir dir="${build.dir}"/>   <!-- Create build directory -->
-        <javac srcdir="${src.dir}" destdir="${build.dir}"/>
-    </target>
+        stage('Build with Ant') {
+            steps {
+                echo 'Building with Ant...'
+                script {
+                    ant buildFile: 'build.xml', target: 'clean compile run'  // Run 'clean', 'compile', and 'run' targets
+                }
+            }
+        }
+    }
 
-    <!-- Task to run the main Java class -->
-    <target name="run" description="Run the main Java program" depends="compile">
-        <java classname="Main" fork="true">
-            <classpath>
-                <pathelement path="${build.dir}"/>
-            </classpath>
-        </java>
-    </target>
-
-</project>
+    post {
+        always {
+            echo 'Cleaning up...'
+        }
+        success {
+            echo 'Build Successful!'
+        }
+        failure {
+            echo 'Build Failed!'
+        }
+    }
+}
