@@ -1,22 +1,25 @@
-<project name="SimpleProject" default="run" basedir=".">
-
+<project name="HelloWorldProject" default="run" basedir=".">
+    
     <!-- Property definitions -->
-    <property name="src.dir" value="src"/>        <!-- Directory for source files -->
-    <property name="build.dir" value="build"/>    <!-- Directory for compiled classes -->
+    <property name="src.dir" value="src"/>       <!-- Directory for source files -->
+    <property name="build.dir" value="build"/>   <!-- Directory for compiled classes -->
 
     <!-- Task to clean the build directory -->
-    <target name="clean" description="Clean the build directory">
+    <target name="clean" description="Cleans the build directory">
+        <echo message="Cleaning the build directory: ${build.dir}"/>
         <delete dir="${build.dir}"/>
     </target>
 
-    <!-- Task to compile Java source files -->
-    <target name="compile" description="Compile the Java source files" depends="clean">
-        <mkdir dir="${build.dir}"/>   <!-- Create build directory -->
-        <javac srcdir="${src.dir}" destdir="${build.dir}"/>
+    <!-- Task to compile the Java program -->
+    <target name="compile" description="Compiles the Java source files" depends="clean">
+        <echo message="Compiling Java source files in ${src.dir}..."/>
+        <mkdir dir="${build.dir}"/>    <!-- Create build directory -->
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
     </target>
 
-    <!-- Task to run the main Java class -->
-    <target name="run" description="Run the main Java program" depends="compile">
+    <!-- Task to run the compiled Java program -->
+    <target name="run" description="Runs the compiled Java program" depends="compile">
+        <echo message="Running the Java program..."/>
         <java classname="Main" fork="true">
             <classpath>
                 <pathelement path="${build.dir}"/>
