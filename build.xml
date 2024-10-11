@@ -1,21 +1,25 @@
 <project name="HelloWorldProject" default="run" basedir=".">
     
-    <!-- Define where to place compiled files -->
-    <property name="build.dir" value="build"/>
+    <!-- Property definitions -->
+    <property name="src.dir" value="src"/>       <!-- Directory for source files -->
+    <property name="build.dir" value="build"/>   <!-- Directory for compiled classes -->
 
-    <!-- Task to clean build directory -->
-    <target name="clean">
+    <!-- Task to clean the build directory -->
+    <target name="clean" description="Cleans the build directory">
+        <echo message="Cleaning the build directory: ${build.dir}"/>
         <delete dir="${build.dir}"/>
     </target>
 
     <!-- Task to compile the Java program -->
-    <target name="compile">
-        <mkdir dir="${build.dir}"/>
-        <javac srcdir="." destdir="${build.dir}" includeantruntime="false"/>
+    <target name="compile" description="Compiles the Java source files" depends="clean">
+        <echo message="Compiling Java source files in ${src.dir}..."/>
+        <mkdir dir="${build.dir}"/>    <!-- Create build directory -->
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
     </target>
 
     <!-- Task to run the compiled Java program -->
-    <target name="run" depends="compile">
+    <target name="run" description="Runs the compiled Java program" depends="compile">
+        <echo message="Running the Java program..."/>
         <java classname="Main" fork="true">
             <classpath>
                 <pathelement path="${build.dir}"/>
