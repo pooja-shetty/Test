@@ -1,25 +1,42 @@
-<project name="HelloWorldProject" default="run" basedir=".">
-    
+<project name="SimpleProject" default="run" basedir=".">
+
     <!-- Property definitions -->
-    <property name="src.dir" value="src"/>       <!-- Directory for source files -->
-    <property name="build.dir" value="build"/>   <!-- Directory for compiled classes -->
+    <property name="src.dir" value="src"/>        <!-- Directory for source files -->
+    <property name="build.dir" value="build"/>    <!-- Directory for compiled classes -->
+    <property name="test.dir" value="test"/>      <!-- Directory for test source files -->
+    <property name="test.results.dir" value="build/test-results"/>  <!-- Directory for test results -->
 
-    <!-- Task to clean the build directory -->
-    <target name="clean" description="Cleans the build directory">
-        <echo message="Cleaning the build directory: ${build.dir}"/>
+    <!-- Task to clean the build and test directories -->
+    <target name="clean" description="Clean the build and test directories">
         <delete dir="${build.dir}"/>
+        <delete dir="${test.results.dir}"/>
     </target>
 
-    <!-- Task to compile the Java program -->
-    <target name="compile" description="Compiles the Java source files" depends="clean">
-        <echo message="Compiling Java source files in ${src.dir}..."/>
-        <mkdir dir="${build.dir}"/>    <!-- Create build directory -->
-        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    <!-- Task to compile Java source files -->
+    <target name="compile" description="Compile the Java source files" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}"/>
     </target>
 
-    <!-- Task to run the compiled Java program -->
-    <target name="run" description="Runs the compiled Java program" depends="compile">
-        <echo message="Running the Java program..."/>
+    <!-- Task to run JUnit tests -->
+    <target name="test" description="Run JUnit tests" depends="compile">
+        <mkdir dir="${test.results.dir}"/>
+
+        <junit printsummary="true">
+            <classpath>
+                <pathelement path="${build.dir}"/>    <!-- Add compiled classes to classpath -->
+            </classpath>
+            <formatter type="xml"/>   <!-- Generate test results in XML format -->
+            <batchtest fork="yes" todir="${test.results.dir}">
+                <fileset dir="${test.dir}">
+                    <include name="**/*Test.java"/>  <!-- Include test files ending with *Test.java -->
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <!-- Task to run the main Java class -->
+    <target name="run" description="Run the main Java program" depends="compile">
         <java classname="Main" fork="true">
             <classpath>
                 <pathelement path="${build.dir}"/>
