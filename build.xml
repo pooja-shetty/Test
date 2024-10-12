@@ -4,11 +4,6 @@
     <property name="src.dir" value="./"/>       <!-- Directory for source files -->
     <property name="build.dir" value="build"/>   <!-- Directory for compiled classes -->
 
- <target name="hello" description="hello print" depends="clean">
-        <echo message="Heeelllooo"/>
-       
-    </target>
-
     
     <!-- Task to clean the build directory -->
     <target name="clean" description="Cleans the build directory">
