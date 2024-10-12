@@ -1,7 +1,7 @@
 <project name="HelloWorldProject" default="run" basedir=".">
     
     <!-- Property definitions -->
-    <property name="src.dir" value="src"/>       <!-- Directory for source files -->
+    <property name="src.dir" value="./"/>       <!-- Directory for source files -->
     <property name="build.dir" value="build"/>   <!-- Directory for compiled classes -->
 
     <!-- Task to clean the build directory -->
