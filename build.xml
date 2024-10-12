@@ -1,10 +1,9 @@
 <project name="HelloWorldProject" default="run" basedir=".">
-    
+
     <!-- Property definitions -->
     <property name="src.dir" value="./"/>       <!-- Directory for source files -->
-    <property name="build.dir" value="build"/>   <!-- Directory for compiled classes -->
+    <property name="build.dir" value="build"/>  <!-- Directory for compiled classes -->
 
-    
     <!-- Task to clean the build directory -->
     <target name="clean" description="Cleans the build directory">
         <echo message="Cleaning the build directory: ${build.dir}"/>
@@ -16,6 +15,7 @@
         <echo message="Compiling Java source files in ${src.dir}..."/>
         <mkdir dir="${build.dir}"/>    <!-- Create build directory -->
         <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+        <echo message="Java files compiled and placed in ${build.dir}"/>
     </target>
 
     <!-- Task to run the compiled Java program -->
@@ -26,6 +26,7 @@
                 <pathelement path="${build.dir}"/>
             </classpath>
         </java>
+        <echo message="Java program executed successfully"/>
     </target>
 
 </project>
