@@ -1,0 +1,33 @@
+<project name="SeleniumProject" default="run-selenium-tests" basedir=".">
+    
+    <!-- Define properties -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="lib.dir" value="lib"/>
+
+    <!-- Clean build directory -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- Compile source code -->
+    <target name="compile" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}">
+            <classpath>
+                <path refid="selenium.classpath"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- Run Selenium tests -->
+    <target name="run-selenium-tests" depends="compile">
+        <java classname="SeleniumTest" fork="true">
+            <classpath>
+                <pathelement path="${build.dir}"/>
+                <path refid="selenium.classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
